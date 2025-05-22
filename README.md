@@ -38,7 +38,7 @@ python -m venv .venv
 
 # Instale as dependências
 pip install -r requirements.txt
-
+```
 ## ▶️ Como usar
 - 1. Execute o Servidor:
     python app.py
@@ -52,5 +52,6 @@ Esse projeto serviu para explorar:
   . WebRTC na prática, com troca de oferta e resposta entre peer e servidor
   . Integração de frontend com backend em tempo real
   . Manipulação de áudio com MediaRecorder e track do aiortc
+  
 ## 👨‍💻 Autor
 ### Silvano
