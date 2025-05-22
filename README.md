@@ -40,7 +40,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 ## ▶️ Como usar
-- 1. Execute o Servidor:
+- 1 Execute o Servidor:
     python app.py
 - 2 Acesse no navegador:
     http://localhost:8080
