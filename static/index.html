@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebRTC Audio Recorder</title>
+  </head>
+  <body>
+    <h1>Gravar Áudio</h1>
+    <button onclick="start()">🎙️ Iniciar Gravação</button>
+    <button onclick="stop()">🛑 Parar Gravação</button>
+
+    <script>
+    let pc = null;
+    let stream = null;
+
+    async function start() {
+      pc = new RTCPeerConnection();
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+
+      await new Promise(resolve => {
+        pc.onicecandidate = event => {
+          if (!event.candidate) {
+            resolve();
+          }
+        };
+      });
+
+      const response = await fetch('/offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pc.localDescription)
+      });
+
+      const answer = await response.json();
+      await pc.setRemoteDescription(answer);
+
+      alert("🎤 Gravando... Clique em 'Parar Gravação' quando quiser.");
+    }
+
+    function stop() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+      if (pc) {
+        pc.close();
+        pc = null;
+      }
+      alert("✅ Gravação encerrada! Verifique o arquivo .wav no servidor.");
+    }
+  </script>
+
+  </body>
+</html>
